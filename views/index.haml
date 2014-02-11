@@ -1,0 +1,116 @@
+!!!
+%html
+  %head
+    %title Roadmap
+    %script{src: "http://www.google.com/jsapi", type: "text/javascript"}
+    %script{src: "timeline/timeline.js", type: "text/javascript"}
+    %link{href: "timeline/timeline.css", rel: "stylesheet", type: "text/css"}/
+    :css
+      body {
+          color: #4D4D4D;
+          font: 10pt arial;
+      }
+    :javascript
+      var timeline = null;
+      var data = [];
+
+      google.load("visualization", "1");
+
+      // Set callback to run when API is loaded
+      google.setOnLoadCallback(drawVisualization);
+
+      // Called when the Visualization API is loaded.
+      function drawVisualization() {
+
+          // Instantiate our timeline object.
+          timeline = new links.Timeline(document.getElementById('mytimeline'));
+
+          // populate the data array from the JSON passed 
+          // in from the ruby code, sourced from JIRA
+          // In JIRA, these are Epics in the PM project, with Component = Roadmap
+          addData();
+
+          // specify options
+          var options = {
+              //width:  "100%",
+              //height: "auto",
+              //minHeight: 50, // pixels
+              //height: "300px",
+              //layout: "box",
+              start: new Date(),
+              end: new Date(1000*60*60*24 + (new Date()).valueOf()),
+              editable: true,
+              animate: false,
+              eventMargin: 10,  // minimal margin between events
+              eventMarginAxis: 5, // minimal margin between events and the axis
+              showMajorLabels: true,
+              //showCustomTime: true,
+              //showNavigation: true,
+              cluster: true,
+              axisOnTop: true,
+              snapEvents: true,
+              dragAreaWidth: 20
+              //groupsWidth : "100px",
+              //groupsOnRight: true
+          };
+
+          // Draw our timeline with the created data and options
+          timeline.draw(data, options);
+
+          google.visualization.events.addListener(timeline, 'select',
+                  function () {
+                      //console.log(select, timeline.getSelection()[0]);
+                  }
+          );
+
+          google.visualization.events.addListener(timeline, 'edit',
+                  function() {
+                      //console.log(edit)
+                  }
+          );
+
+          google.visualization.events.addListener(timeline, 'change',
+                  function() {
+                      //console.log(change)
+                      //timeline.cancelChange();
+                  }
+          );
+
+          google.visualization.events.addListener(timeline, 'add',
+                  function() {
+                      //console.log(add)
+                      //timeline.cancelAdd();
+                  }
+          );
+
+          /*
+           console.profile();
+           var count = 10;
+           for (var i = 0; i < count; i++) {
+           timeline.redraw();
+           }
+           console.profileEnd();
+           //*/
+      }
+
+      function addData() {
+
+        var jiras = #{@r_items.to_json};
+
+        for (var i = 0; i < jiras.length; i++) 
+        {
+          data.push({
+              'content': jiras[i]["content"],
+              'group': jiras[i]["group"],
+              'start': new Date(jiras[i]["start"]),
+              'end': new Date(jiras[i]["end"])
+          });
+        }
+       
+
+      }
+
+  %body{onresize: "/*timeline.checkResize();*/"}
+    %h1 Timeline grouping performance
+    #mytimeline
+    #info
