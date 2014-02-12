@@ -7,30 +7,47 @@ require 'sinatra/config_file'
 
 config_file 'config/config.yml'
 
+# add in basic auth using env variables
+helpers do
+  def protected!
+    return if authorized?
+    headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+    halt 401, "Not authorized\n"
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [ENV['ADMIN_USER'], ENV['ADMIN_PASS']]
+  end
+end
+
 get '/' do
-    @jiras = get_roadmap 
-    @r_items = []
+  protected!
 
-    @jiras['issues'].each {|jira| 
-      @r_item = {}
+  @jiras = get_roadmap 
+  @r_items = []
 
-      if(jira['fields'])
-        
-        #puts 'JIRA: ' + jira.to_s
+  @jiras['issues'].each {|jira| 
+    @r_item = {}
 
-        @r_item['content'] = jira['fields']['summary']
-        @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
-        @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
-        @r_item['group'] = jira['fields']['customfield_11850']['value']
+    if(jira['fields'])
+      
+      #puts 'JIRA: ' + jira.to_s
 
-        @r_items.push(@r_item)
-      end
-    }
+      @r_item['content'] = jira['fields']['summary']
+      @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
+      @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
+      @r_item['group'] = jira['fields']['customfield_11850']['value']
 
-    haml :index, :locals => {:jiras => @r_items}
+      @r_items.push(@r_item)
+    end
+  }
+
+  haml :index, :locals => {:jiras => @r_items}
 end
 
 get '/roadmap' do
+  protected!
   return JSON.pretty_generate(get_roadmap)
 end
 
