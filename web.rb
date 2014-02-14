@@ -39,6 +39,7 @@ get '/' do
       @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
       @r_item['group'] = jira['fields']['customfield_11850']['value']
       @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
+      @r_item['jira_description'] = jira['renderedFields']['description']
 
       @r_items.push(@r_item)
     end
