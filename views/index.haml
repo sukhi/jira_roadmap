@@ -4,6 +4,7 @@
     %title Roadmap
     %script{src: "http://www.google.com/jsapi", type: "text/javascript"}
     %script{src: "timeline/timeline.js", type: "text/javascript"}
+    %script{src: "lib/jquery-1.9.1.js", type: "text/javascript"}
     %link{href: "timeline/timeline.css", rel: "stylesheet", type: "text/css"}/
     :css
       body {
@@ -19,78 +20,87 @@
       // Set callback to run when API is loaded
       google.setOnLoadCallback(drawVisualization);
 
+
       // Called when the Visualization API is loaded.
       function drawVisualization() {
 
-          // Instantiate our timeline object.
-          timeline = new links.Timeline(document.getElementById('mytimeline'));
+        // Instantiate our timeline object.
+        timeline = new links.Timeline(document.getElementById('mytimeline'));
 
-          // populate the data array from the JSON passed 
-          // in from the ruby code, sourced from JIRA
-          // In JIRA, these are Epics in the PM project, with Component = Roadmap
-          addData();
+        // populate the data array from the JSON passed 
+        // in from the ruby code, sourced from JIRA
+        // In JIRA, these are Epics in the PM project, with Component = Roadmap
+        addData();
 
-          // specify options
-          var options = {
-              //width:  "100%",
-              //height: "auto",
-              //minHeight: 50, // pixels
-              //height: "300px",
-              //layout: "box",
-              start: new Date("01-01-2014"),
-              end: new Date(1000*60*60*24*90 + (new Date()).valueOf()),
-              editable: true,
-              animate: false,
-              eventMargin: 10,  // minimal margin between events
-              eventMarginAxis: 5, // minimal margin between events and the axis
-              showMajorLabels: true,
-              //showCustomTime: true,
-              //showNavigation: true,
-              cluster: true,
-              axisOnTop: true,
-              snapEvents: true,
-              dragAreaWidth: 20
-              //groupsWidth : "100px",
-              //groupsOnRight: true
-          };
+        // specify options
+        var options = {
+          //width:  "100%",
+          //height: "auto",
+          //minHeight: 50, // pixels
+          //height: "300px",
+          //layout: "box",
+          start: new Date("01-01-2014"),
+          end: new Date(1000*60*60*24*90 + (new Date()).valueOf()),
+          editable: true,
+          animate: false,
+          eventMargin: 10,  // minimal margin between events
+          eventMarginAxis: 5, // minimal margin between events and the axis
+          showMajorLabels: true,
+          //showCustomTime: true,
+          //showNavigation: true,
+          cluster: true,
+          axisOnTop: true,
+          snapEvents: true,
+          dragAreaWidth: 20
+          //groupsWidth : "100px",
+          //groupsOnRight: true
+        };
 
-          // Draw our timeline with the created data and options
-          timeline.draw(data, options);
+        // Draw our timeline with the created data and options
+        timeline.draw(data, options);
 
-          google.visualization.events.addListener(timeline, 'select',
-                  function () {
-                      //console.log(select, timeline.getSelection()[0]);
-                  }
-          );
+        google.visualization.events.addListener(timeline, 'select',
+          function () {
+            console.log('select', timeline.getSelection()[0]);
 
-          google.visualization.events.addListener(timeline, 'edit',
-                  function() {
-                      //console.log(edit)
-                  }
-          );
+            selected = timeline.getSelection()[0];
+            myepic = timeline.data[selected.row];
+          
+            $('#info').html('<table><tr><td colspan="2"><h3>' + myepic.content + '</h3></td><tr><td><i>JIRA Link:</i></td><td><a href="' + myepic.jira_uri + '">' + myepic.jira_uri + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr></table>');
 
-          google.visualization.events.addListener(timeline, 'change',
-                  function() {
-                      //console.log(change)
-                      //timeline.cancelChange();
-                  }
-          );
+          }
+        );
 
-          google.visualization.events.addListener(timeline, 'add',
-                  function() {
-                      //console.log(add)
-                      //timeline.cancelAdd();
-                  }
-          );
+        google.visualization.events.addListener(timeline, 'edit',
+          function() {
+            //console.log(edit)
+          }
+        );
 
-          /*
-           console.profile();
-           var count = 10;
-           for (var i = 0; i < count; i++) {
-           timeline.redraw();
-           }
-           console.profileEnd();
-           //*/
+        google.visualization.events.addListener(timeline, 'change',
+          function() {
+            //console.log(change)
+            //timeline.cancelChange();
+          }
+        );
+
+        google.visualization.events.addListener(timeline, 'add',
+          function() {
+            //console.log(add)
+            //timeline.cancelAdd();
+            }
+        );
+
+        function getSelectedRow() {
+          var row = undefined;
+          var sel = timeline.getSelection();
+          if (sel.length) {
+            if (sel[0].row != undefined) {
+              row = sel[0].row;
+            }
+          }
+          return row;
+        }
       }
 
       function addData() {
@@ -103,7 +113,8 @@
               'content': jiras[i]["content"],
               'group': jiras[i]["group"],
               'start': new Date(jiras[i]["start"]),
-              'end': new Date(jiras[i]["end"])
+              'end': new Date(jiras[i]["end"]),
+              'jira_uri': jiras[i]["jira_uri"]
           });
         }
        
