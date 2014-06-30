@@ -69,7 +69,7 @@
             jira_description = myepic.jira_description;
             if(jira_description == null) { jira_description = "" }  else { jira_description = jira_description; }
           
-            $('#info').html('<table style="border: 1px solid black; padding: 5px;"><tr><td colspan="2"><h3>' + myepic.content + '</h3></td><tr><td width="100px"><i>JIRA Link:</i></td><td><a href="' + myepic.jira_uri + '">' + myepic.jira_uri + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr><tr><td colspan="2">' + jira_description + '</td</tr></table>');
+            $('#info').html('<table style="border: 1px solid black; padding: 5px;"><tr><td colspan="2"><h3>' + myepic.content + '</h3></td><tr><td width="100px"><i>JIRA Link:</i></td><td><a href="' + myepic.jira_uri + '">' + myepic.jira_uri + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr><tr><td>Scrum Team:</td><td>' + myepic.scrum_team + '</td></tr><tr><td colspan="2">' + jira_description + '</td</tr></table>');
 
           }
         );
@@ -115,6 +115,7 @@
           data.push({
               'content': jiras[i]["content"],
               'group': jiras[i]["group"],
+              'scrum_team': jiras[i]["scrum_team"],
               'start': new Date(jiras[i]["start"]),
               'end': new Date(jiras[i]["end"]),
               'jira_uri': jiras[i]["jira_uri"],
