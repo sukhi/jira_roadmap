@@ -1,4 +1,4 @@
 jira_host: govdelivery.atlassian.net
 jira_port: 443
 use_ssl: true
-jira_path: '/rest/api/2/search?jql=project=PM+and+type=Epic+and+resolution=unresolved+and+component=roadmap&fields=id,key,summary,customfield_11950,customfield_11951,customfield_11850,description&expand=renderedFields'
+jira_path: '/rest/api/2/search?jql=project=PM+and+type=Epic+and+resolution=unresolved+and+component=roadmap&fields=id,key,summary,customfield_11950,customfield_11951,customfield_11850,description,customfield_12151&expand=renderedFields'

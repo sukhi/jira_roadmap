@@ -33,11 +33,17 @@ get '/' do
     if(jira['fields'])
       
       #puts 'JIRA: ' + jira.to_s
+      if jira['fields']['customfield_12151'].nil?
+	roadmap_group = "Undefined"
+      else
+      	roadmap_group = jira['fields']['customfield_12151']['value']
+      end
 
       @r_item['content'] = jira['fields']['summary']
       @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
       @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
-      @r_item['group'] = jira['fields']['customfield_11850']['value']
+      #@r_item['group'] = jira['fields']['customfield_11850']['value']
+      @r_item['group'] = roadmap_group
       @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
       @r_item['jira_description'] = jira['renderedFields']['description']
 
