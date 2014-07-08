@@ -41,14 +41,14 @@
           //layout: "box",
           start: new Date("06-01-2014"),
           end: new Date(1000*60*60*24*90 + (new Date()).valueOf()),
-          editable: true,
+          editable: false,
           animate: false,
           eventMargin: 10,  // minimal margin between events
           eventMarginAxis: 5, // minimal margin between events and the axis
           showMajorLabels: true,
           //showCustomTime: true,
           //showNavigation: true,
-          cluster: true,
+          cluster: false,
           axisOnTop: true,
           snapEvents: true,
           dragAreaWidth: 20
@@ -119,13 +119,14 @@
               'start': new Date(jiras[i]["start"]),
               'end': new Date(jiras[i]["end"]),
               'jira_uri': jiras[i]["jira_uri"],
-              'jira_description': jiras[i]["jira_description"]
+              'jira_description': jiras[i]["jira_description"],
+              'className': jiras[i]["scrum_team"],
+              'tag': jiras[i]["scrum_team"]
           });
         }
 
       }
 
   %body{onresize: "/*timeline.checkResize();*/"}
-    %h1 Timeline grouping performance
     #mytimeline
     #info

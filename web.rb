@@ -53,12 +53,20 @@ get '/' do
       @r_item['scrum_team'] = scrum_team
       @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
       @r_item['jira_description'] = jira['renderedFields']['description']
+      @r_item['scrum_team'] = cssify(scrum_team)
 
       @r_items.push(@r_item)
     end
   }
 
   haml :index, :locals => {:jiras => @r_items}
+end
+
+def cssify(input)
+  input = input.tr( '^A-Za-z', '' )
+  input = input.tr( 'A-Z', 'a-z' )
+
+  return input
 end
 
 get '/roadmap' do

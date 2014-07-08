@@ -48,7 +48,7 @@ div.timeline-axis-text-major {
 
 div.timeline-event {
     -moz-box-sizing: border-box;
-    background-color: #d5ddf6;
+    background-color: #AAAAAA;
     border-color: #97b0f8;
     box-sizing: border-box;
     color: #1a1a1a;
@@ -209,3 +209,34 @@ div.timeline-navigation-move-left {
 div.timeline-navigation-move-right {
     background: url('img/16/moveright.png') no-repeat center;
 }
+
+div.ensrick {
+  background-color: #FF9999;
+}
+
+div.evolutionbeno {
+  background-color: #FFD699;
+}
+
+div.alertingchad {
+  background-color: #E6FF99;
+}
+
+div.deliverabilitybrian, div.teambadinabrian {
+  background-color: #66FF66;
+}
+
+div.csmjamess {
+  background-color: #E6CCFF;
+}
+
+div.configmgmtbenj {
+  background-color: #99FFEB;
+}
+
+div.overlaytyler {
+  background-color: ##d5ddf6;;
+}
+
+
+
