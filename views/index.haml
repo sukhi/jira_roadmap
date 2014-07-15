@@ -68,6 +68,11 @@
           function () {
             console.log('select', timeline.getSelection()[0]);
 
+            if(!timeline.getSelection()[0]) {
+              $('#jira_info').css("visibility", "hidden");
+              return;
+            }
+
             selected = timeline.getSelection()[0];
             myepic = timeline.data[selected.row];
 
