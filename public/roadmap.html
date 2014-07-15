@@ -30,13 +30,6 @@
             // Instantiate our timeline object.
             timeline = new links.Timeline(document.getElementById('mytimeline'));
 
-            // Create and populate a data table.
-            //data = new google.visualization.DataTable();
-            //data.addColumn('datetime', 'start');
-            //data.addColumn('datetime', 'end');
-            //data.addColumn('string', 'content');
-            //data.addColumn('string', 'group');
-
             data = [];
 
             addData();
@@ -122,14 +115,8 @@
         var count = (Number(gup('count')) || 100);
 
         function addData() {
-          /*data.push({
-            'start': new Date("2014-01-15"),
-            'end': new Date("2014-02-07"), 
-            'content': 'XACT Email Cleanup',
-            'group':'Team 1'
-          });*/ 
 
-          var jiras = [{"content":"Two-factor authentication in DCM et al using Twilio","start":"2014-04-01","end":"2014-04-30","group":"Team λλλ (Tor/BenO)"},{"content":"XACT - DCM integration stories - Batch 1 Admin API","start":"2014-02-10","end":"2014-03-14","group":"Team B (Adina/Brian)"},{"content":"XACT - Email Cleanup","start":"2014-01-22","end":"2014-02-07","group":"Team λλλ (Tor/BenO)"}];
+          //var jiras = [{"content":"Two-factor authentication in DCM et al using Twilio","start":"2014-04-01","end":"2014-04-30","group":"Team λλλ (Tor/BenO)"},{"content":"XACT - DCM integration stories - Batch 1 Admin API","start":"2014-02-10","end":"2014-03-14","group":"Team B (Adina/Brian)"},{"content":"XACT - Email Cleanup","start":"2014-01-22","end":"2014-02-07","group":"Team λλλ (Tor/BenO)"}];
 
           for (var i = 0; i < jiras.length; i++) 
           {
