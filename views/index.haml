@@ -56,7 +56,8 @@
           cluster: false,
           axisOnTop: true,
           snapEvents: true,
-          dragAreaWidth: 20
+          dragAreaWidth: 20,
+          zoomable: false,
           //groupsWidth : "100px",
           //groupsOnRight: true
         };
@@ -81,7 +82,7 @@
 
             console.log("jira: " + myepic.content);
           
-            $('#jira_info').html('<div class="close_box">X</div><table style="border: 1px solid black; padding: 5px; width: 100%;"><tr><td colspan="2"><h3>' + myepic.content + '</h3></td></tr><tr><td width="100px"><i>JIRA Link:</i></td><td><a class="clickable" href="' + myepic.jira_uri + '">' + myepic.jira_key + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr><tr><td>Scrum Team:</td><td>' + myepic.scrum_team + '</td></tr><tr><td>Source:</td><td>' + myepic.source + '</td></tr><tr><td colspan="2">' + jira_description + '</td</tr></table>');
+            $('#jira_info').html('<div class="close_box">X</div><table style="width: 100%;"><tr><td colspan="2"><div style="font-size: large; font-weight: bold;">' + myepic.content + '</div></td></tr><tr><td width="100px"><i>JIRA Link:</i></td><td><a class="clickable" href="' + myepic.jira_uri + '">' + myepic.jira_key + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr><tr><td>Scrum Team:</td><td>' + myepic.scrum_team + '</td></tr><tr><td>Source:</td><td>' + myepic.source + '</td></tr><tr><td colspan="2">' + jira_description + '</td</tr></table>');
             $('#jira_info').css("visibility", "visible");
             $('#jira_info').css("background-color", "#ffffff");
 
