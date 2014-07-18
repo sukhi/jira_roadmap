@@ -35,6 +35,7 @@ get '/' do
     if(jira['fields'])
       
       #puts 'JIRA: ' + jira.to_s
+      # "priority"=>{"self"=>"https://govdelivery.atlassian.net/rest/api/2/priority/4", "iconUrl"=>"https://govdelivery.atlassian.net/images/icons/priorities/minor.png", "name"=>"Medium", "id"=>"4"}
       if jira['fields']['customfield_12151'].nil?
         roadmap_group = "Unset"
       else
@@ -47,16 +48,24 @@ get '/' do
       	scrum_team = jira['fields']['customfield_11850']['value']
       end
 
+      if jira['fields']['customfield_10003'].nil?
+        points = 0;
+      else
+      	points = jira['fields']['customfield_10003']
+      end
+
       @r_item['content'] = jira['fields']['summary']
       @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
       @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
-      #@r_item['group'] = jira['fields']['customfield_11850']['value']
       @r_item['scrum_team'] = scrum_team
       @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
       @r_item['jira_description'] = jira['renderedFields']['description']
       @r_item['scrum_team_css'] = cssify(scrum_team)
       @r_item['jira_key'] = jira['key']
       @r_item['source'] = roadmap_group
+      @r_item['points'] = points
+      @r_item['priority'] = jira['fields']['priority']['name']
+      @r_item['priorityImage'] = jira['fields']['priority']['iconUrl']
 
       if @grouping.eql? "scrum_team"
         @r_item['group'] = scrum_team 

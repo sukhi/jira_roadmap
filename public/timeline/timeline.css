@@ -266,4 +266,10 @@ div.overlaytyler {
   background-color: #000000;
 }
 
-
+.storypoints {
+  background-color: #333333;
+  color: #ffff00;
+  border: solid black 1px;
+  padding: 1px;
+  font-weight: bold;
+}
