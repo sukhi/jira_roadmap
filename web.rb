@@ -4,6 +4,7 @@ require 'net/https'
 require 'json'
 require 'haml'
 require 'sinatra/config_file'
+require 'awesome_print'
 
 config_file 'config/config.yml'
 
@@ -24,9 +25,10 @@ end
 get '/' do
   protected!
 
+  @project = params["project"]? params["project"] : "pm"
   @grouping = params["group"]? params["group"] : "roadmap_group"
 
-  @jiras = get_roadmap 
+  @jiras = get_roadmap(@project) 
   @r_items = []
 
   @jiras['issues'].each {|jira| 
@@ -35,7 +37,6 @@ get '/' do
     if(jira['fields'])
       
       #puts 'JIRA: ' + jira.to_s
-      # "priority"=>{"self"=>"https://govdelivery.atlassian.net/rest/api/2/priority/4", "iconUrl"=>"https://govdelivery.atlassian.net/images/icons/priorities/minor.png", "name"=>"Medium", "id"=>"4"}
       if jira['fields']['customfield_12151'].nil?
         roadmap_group = "Unset"
       else
@@ -87,19 +88,19 @@ def cssify(input)
   return input
 end
 
-get '/roadmap' do
-  protected!
-  return JSON.pretty_generate(get_roadmap)
-end
-
-def get_roadmap
+##
+#
+# Get the data from the JIRA server
+#
+##
+def get_roadmap(project)
 
   @jira_epics = ''
 
   http = Net::HTTP.new(settings.jira_host, settings.jira_port)
   http.use_ssl = settings.use_ssl
   http.start do |http|
-    req = Net::HTTP::Get.new(settings.jira_path)
+    req = Net::HTTP::Get.new(settings.jira_queries[project])
 
     # we make an HTTP basic auth by passing the
     # username and password
