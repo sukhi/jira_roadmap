@@ -55,6 +55,14 @@ get '/' do
       	points = jira['fields']['customfield_10003']
       end
 
+      if jira['fields']['priority'].nil?
+        priority = nil;
+      else
+      	priority = jira['fields']['priority']['name']
+        priority_image = jira['fields']['priority']['iconUrl']
+      end
+
+
       @r_item['content'] = jira['fields']['summary']
       @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
       @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
@@ -65,8 +73,8 @@ get '/' do
       @r_item['jira_key'] = jira['key']
       @r_item['source'] = roadmap_group
       @r_item['points'] = points
-      @r_item['priority'] = jira['fields']['priority']['name']
-      @r_item['priorityImage'] = jira['fields']['priority']['iconUrl']
+      @r_item['priority'] = priority
+      @r_item['priorityImage'] = priority_image
 
       if @grouping.eql? "scrum_team"
         @r_item['group'] = scrum_team 
