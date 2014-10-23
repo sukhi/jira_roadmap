@@ -3,4 +3,4 @@ jira_port: 443
 use_ssl: true
 jira_queries:
   pm: '/rest/api/2/search?jql=project=PM+and+type=Epic+and+resolution=unresolved+and+component=roadmap&fields=id,key,summary,customfield_11950,customfield_11951,customfield_11850,description,customfield_12151,customfield_10003,priority&expand=renderedFields'
-  plan: '/rest/api/2/search?jql=project+in+(plan,cm)+and+type=epic+and+"Roadmap+Start"+is+not+empty+and+"Roadmap+End"+is+not+empty&fields=id,key,summary,customfield_11950,customfield_11951,customfield_11850,description,customfield_12151,customfield_10003,priority&expand=renderedFields'
+  plan: '/rest/api/2/search?jql=project+in+(plan,cm,build)+and+type=epic+and+"Roadmap+Start"+is+not+empty+and+"Roadmap+End"+is+not+empty&fields=id,key,summary,customfield_11950,customfield_11951,customfield_11850,description,customfield_12151,customfield_10003,priority&expand=renderedFields'
