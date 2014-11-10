@@ -210,12 +210,13 @@ div.timeline-navigation-move-right {
     background: url('img/16/moveright.png') no-repeat center;
 }
 
+/* bar colors */
 div.ensrickjoe {
   background-color: #FF9999;
 }
 
-div.evolutionedjoe {
-  background-color: #FFD699;
+div.evooverlayedjoe {
+  background-color: #d5ddf6;
 }
 
 div.alertingchad {
@@ -234,8 +235,8 @@ div.configmgmtbenj {
   background-color: #99FFEB;
 }
 
-div.overlaytyleraddie {
-  background-color: #d5ddf6;
+div.analyticsbillyjim {
+  background-color: #FFD699;
 }
 
 div.apisbenoadina {
