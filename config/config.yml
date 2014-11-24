@@ -1,4 +1,4 @@
-jira_host: govdelivery.atlassian.net
+jira_host: jira.govdelivery.com
 jira_port: 443
 use_ssl: true
 jira_queries:
