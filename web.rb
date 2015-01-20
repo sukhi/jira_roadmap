@@ -37,7 +37,7 @@ get '/' do
 
     if(jira['fields'])
       
-      puts 'JIRA CF: ' + jira['fields'].to_s
+      #puts 'JIRA CF: ' + jira['fields'].to_s
       if jira['fields']['customfield_12151'].nil?
         roadmap_group = "Unset"
       else
@@ -57,7 +57,6 @@ get '/' do
         sti = 98
       end
       scrum_team = "#{sti}. #{scrum_team}"
-      puts scrum_teams
 
       if jira['fields']['customfield_10003'].nil?
         points = 0;
