@@ -44,7 +44,7 @@
           //minHeight: 50, // pixels
           //height: "300px",
           //layout: "box",
-          start: new Date("06-01-2014"),
+          start: new Date("11-01-2014"),
           end: new Date(1000*60*60*24*90 + (new Date()).valueOf()),
           editable: false,
           animate: false,
@@ -57,8 +57,8 @@
           axisOnTop: true,
           snapEvents: true,
           dragAreaWidth: 20,
-          zoomable: false,
-          customStackOrder: function(a,b) { return (b.points - a.points) }
+          zoomable: false
+          //customStackOrder: function(a,b) { return (b.className > a.className); }
           //groupsWidth : "100px",
           //groupsOnRight: true
         };
@@ -68,7 +68,7 @@
 
         google.visualization.events.addListener(timeline, 'select',
           function () {
-            console.log('select', timeline.getSelection()[0]);
+            //console.log('select', timeline.getSelection()[0]);
 
             if(!timeline.getSelection()[0]) {
               $('#jira_info').css("visibility", "hidden");
@@ -81,7 +81,7 @@
             jira_description = myepic.jira_description;
             if(jira_description == null) { jira_description = "" }  else { jira_description = jira_description; }
 
-            console.log("jira: " + myepic.content);
+            //console.log("jira: " + myepic.content);
           
             $('#jira_info').html('<div class="close_box">X</div><table style="width: 100%;"><tr><td colspan="2"><div style="font-size: large; font-weight: bold;">' + myepic.orig_content + '</div></td></tr><tr><td width="100px"><i>JIRA Link:</i></td><td><a class="clickable" href="' + myepic.jira_uri + '">' + myepic.jira_key + '</a></td></tr><tr><td><i>Start:</i></td><td>' + myepic.start.toLocaleDateString() + '</td></tr><tr><td><i>End:</i></td><td>' + myepic.end.toLocaleDateString() + '</td></tr><tr><td>Scrum Team:</td><td>' + myepic.scrum_team + '</td></tr><tr><td>Source:</td><td>' + myepic.source + '</td></tr><tr><td colspan="2">' + jira_description + '</td</tr></table>');
             $('#jira_info').css("visibility", "visible");
@@ -156,7 +156,6 @@
               'source': jiras[i]["source"]
           });
         }
-
       }
 
   %body{onresize: "/*timeline.checkResize();*/"}
