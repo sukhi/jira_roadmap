@@ -30,13 +30,14 @@ get '/' do
 
   @jiras = get_roadmap(@project) 
   @r_items = []
+  scrum_teams = []
 
-  @jiras['issues'].each {|jira| 
+  @jiras['issues'].each_with_index {|jira, i| 
     @r_item = {}
 
     if(jira['fields'])
       
-      #puts 'JIRA: ' + jira.to_s
+      puts 'JIRA CF: ' + jira['fields'].to_s
       if jira['fields']['customfield_12151'].nil?
         roadmap_group = "Unset"
       else
@@ -48,6 +49,15 @@ get '/' do
       else
       	scrum_team = jira['fields']['customfield_11850']['value']
       end
+      scrum_teams << scrum_team unless scrum_teams.include?(scrum_team)
+      sti = scrum_teams.index(scrum_team)+1
+      if scrum_team == "Unset"
+        sti = 99
+      elsif scrum_team.include?("Roadmap")
+        sti = 98
+      end
+      scrum_team = "#{sti}. #{scrum_team}"
+      puts scrum_teams
 
       if jira['fields']['customfield_10003'].nil?
         points = 0;
