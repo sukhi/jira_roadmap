@@ -28,72 +28,74 @@ get '/' do
   @project = params["project"]? params["project"] : "pm"
   @grouping = params["group"]? params["group"] : "roadmap_group"
 
-  @jiras = get_roadmap(@project) 
+  @jiras = get_roadmap(@project)
   @r_items = []
   scrum_teams = []
 
-  @jiras['issues'].each_with_index {|jira, i| 
-    @r_item = {}
+  if(@jiras['issues'])
+    @jiras['issues'].each_with_index {|jira, i|
+      @r_item = {}
 
-    if(jira['fields'])
-      
-      #puts 'JIRA CF: ' + jira['fields'].to_s
-      if jira['fields']['customfield_12151'].nil?
-        roadmap_group = "Unset"
-      else
-      	roadmap_group = jira['fields']['customfield_12151']['value']
+      if(jira['fields'])
+
+        #puts 'JIRA CF: ' + jira['fields'].to_s
+        if jira['fields']['customfield_12151'].nil?
+          roadmap_group = "Unset"
+        else
+          roadmap_group = jira['fields']['customfield_12151']['value']
+        end
+
+        if jira['fields']['customfield_11850'].nil?
+          scrum_team = "Unset"
+        else
+          scrum_team = jira['fields']['customfield_11850']['value']
+        end
+        scrum_teams << scrum_team unless scrum_teams.include?(scrum_team)
+        sti = scrum_teams.index(scrum_team)+1
+        if scrum_team == "Unset"
+          sti = 99
+        elsif scrum_team.include?("Roadmap")
+          sti = 98
+        end
+        scrum_team = "#{sti}. #{scrum_team}"
+
+        if jira['fields']['customfield_10003'].nil?
+          points = 0;
+        else
+          points = jira['fields']['customfield_10003']
+        end
+
+        if jira['fields']['priority'].nil?
+          priority = nil;
+        else
+          priority = jira['fields']['priority']['name']
+          priority_image = jira['fields']['priority']['iconUrl']
+        end
+
+
+        @r_item['content'] = jira['fields']['summary']
+        @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
+        @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
+        @r_item['scrum_team'] = scrum_team
+        @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
+        @r_item['jira_description'] = jira['renderedFields']['description']
+        @r_item['scrum_team_css'] = cssify(scrum_team)
+        @r_item['jira_key'] = jira['key']
+        @r_item['source'] = roadmap_group
+        @r_item['points'] = points
+        @r_item['priority'] = priority
+        @r_item['priorityImage'] = priority_image
+
+        if @grouping.eql? "scrum_team"
+          @r_item['group'] = scrum_team
+        else
+          @r_item['group'] = roadmap_group
+        end
+
+        @r_items.push(@r_item)
       end
-
-      if jira['fields']['customfield_11850'].nil?
-        scrum_team = "Unset"
-      else
-      	scrum_team = jira['fields']['customfield_11850']['value']
-      end
-      scrum_teams << scrum_team unless scrum_teams.include?(scrum_team)
-      sti = scrum_teams.index(scrum_team)+1
-      if scrum_team == "Unset"
-        sti = 99
-      elsif scrum_team.include?("Roadmap")
-        sti = 98
-      end
-      scrum_team = "#{sti}. #{scrum_team}"
-
-      if jira['fields']['customfield_10003'].nil?
-        points = 0;
-      else
-      	points = jira['fields']['customfield_10003']
-      end
-
-      if jira['fields']['priority'].nil?
-        priority = nil;
-      else
-      	priority = jira['fields']['priority']['name']
-        priority_image = jira['fields']['priority']['iconUrl']
-      end
-
-
-      @r_item['content'] = jira['fields']['summary']
-      @r_item['start'] = Time.parse(jira['fields']['customfield_11950'])
-      @r_item['end'] = Time.parse(jira['fields']['customfield_11951'])
-      @r_item['scrum_team'] = scrum_team
-      @r_item['jira_uri'] = 'https://' + settings.jira_host + '/browse/' + jira['key']
-      @r_item['jira_description'] = jira['renderedFields']['description']
-      @r_item['scrum_team_css'] = cssify(scrum_team)
-      @r_item['jira_key'] = jira['key']
-      @r_item['source'] = roadmap_group
-      @r_item['points'] = points
-      @r_item['priority'] = priority
-      @r_item['priorityImage'] = priority_image
-
-      if @grouping.eql? "scrum_team"
-        @r_item['group'] = scrum_team 
-      else
-        @r_item['group'] = roadmap_group
-      end
-
-      @r_items.push(@r_item)
-    end
-  }
+    }
+  end
 
   haml :index, :locals => {:jiras => @r_items}
 end
